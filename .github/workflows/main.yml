@@ -32,8 +32,6 @@ jobs:
     name: Continuous Delivery
     needs: integration
     runs-on: ubuntu-latest
-    outputs:
-      registry: ${{ steps.login-ecr.outputs.registry }}
 
     steps:
       - name: Checkout Code
@@ -87,7 +85,7 @@ jobs:
 
       - name: Pull Latest Image
         run: |
-          docker pull ${{ needs.build-and-push-ecr-image.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          docker pull 320042237972.dkr.ecr.eu-north-1.amazonaws.com/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
       - name: Stop and Remove Old Container
         run: |
@@ -100,7 +98,7 @@ jobs:
           -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
           -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
           -e AWS_REGION=${{ secrets.AWS_REGION }} \
-          ${{ needs.build-and-push-ecr-image.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          320042237972.dkr.ecr.eu-north-1.amazonaws.com/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
       - name: Clean Old Docker Images
         run: docker system prune -f
